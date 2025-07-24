@@ -1,1 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teachable Machine Model</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 50px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .file-link {
+            display: inline-block;
+            margin: 10px;
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+        .file-link:hover {
+            background-color: #45a049;
+        }
+        .status {
+            margin: 20px 0;
+            padding: 15px;
+            border-radius: 5px;
+        }
+        .success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🤖 Teachable Machine Model</h1>
+        <p>Файлы модели для распознавания часов</p>
+        
+        <div class="status" id="status">
+            <p>🔄 Проверяю файлы модели...</p>
+        </div>
+        
+        <div>
+            <h3>📁 Файлы модели:</h3>
+            <a href="model.json" class="file-link" target="_blank">model.json</a>
+            <a href="metadata.json" class="file-link" target="_blank">metadata.json</a>
+        </div>
+        
+        <div style="margin-top: 30px;">
+            <h3>📱 Для Flutter приложения используйте URL:</h3>
+            <code id="flutter-url" style="background: #f0f0f0; padding: 10px; border-radius: 5px;">
+                https://sushiview.github.io/teach/
+            </code>
+        </div>
+        
+        <div style="margin-top: 20px; font-size: 14px; color: #666;">
+            <p>Если ссылки выше работают, ваша модель готова к использованию!</p>
+        </div>
+    </div>
 
+    <script>
+        // Проверяем доступность файлов модели
+        async function checkFiles() {
+            const statusDiv = document.getElementById('status');
+            
+            try {
+                // Проверяем model.json
+                const modelResponse = await fetch('model.json');
+                const metadataResponse = await fetch('metadata.json');
+                
+                if (modelResponse.ok && metadataResponse.ok) {
+                    statusDiv.className = 'status success';
+                    statusDiv.innerHTML = '✅ Все файлы модели доступны и готовы к использованию!';
+                } else {
+                    throw new Error('Файлы недоступны');
+                }
+            } catch (error) {
+                statusDiv.className = 'status error';
+                statusDiv.innerHTML = '❌ Ошибка: Файлы модели не найдены. Убедитесь, что model.json и metadata.json загружены в репозиторий.';
+            }
+        }
+        
+        // Запускаем проверку при загрузке страницы
+        checkFiles();
+    </script>
+</body>
+</html>
